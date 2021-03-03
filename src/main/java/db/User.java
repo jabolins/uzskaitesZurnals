@@ -1,6 +1,6 @@
 package db;
 
-public class Lietotajs {
+public class User {
 
 
     public String getLietotajvards() {
@@ -39,7 +39,7 @@ public class Lietotajs {
     private String epasts;
     private String loma;
 
-    public Lietotajs(String lietotajvards, String parole, String epasts, String loma){
+    public User(String lietotajvards, String parole, String epasts, String loma){
         this.lietotajvards= lietotajvards;
         this.parole= parole;
         this.epasts= epasts;

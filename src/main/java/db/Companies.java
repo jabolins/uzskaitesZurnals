@@ -6,7 +6,7 @@ public class Companies {
     private String companyRegistrationNr;
     private String companyAddress;
     private String companyBankData;
-    private String companyPhone;
+    private int companyPhone;
     private String companyEMail;
     private String companyBaseProductGroup;
     private String companyBaseProductToBusiness; // šis jāizdomā labāks nosaukums
@@ -18,7 +18,6 @@ public class Companies {
     public void setCompanyShortName(String companyShortName) {
         this.companyShortName = companyShortName;
     }
-
 
     public String getCompanyName() {
         return companyName;
@@ -52,11 +51,11 @@ public class Companies {
         this.companyBankData = companyBankData;
     }
 
-    public String getCompanyPhone() {
+    public int getCompanyPhone() {
         return companyPhone;
     }
 
-    public void setCompanyPhone(String companyPhone) {
+    public void setCompanyPhone(int companyPhone) {
         this.companyPhone = companyPhone;
     }
 
