@@ -1,40 +1,28 @@
 package controllers;
 
 import java.io.IOException;
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 import db.Companies;
 import db.DbManagment;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import operativeDate.OperativeDate;
+import javafx.util.Duration;
+import operativeDate.OperatvieDataConstants;
 
 import static java.lang.Integer.parseInt;
 
 public class AddCompanyPage {
 
     @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
-    @FXML
-    private BorderPane basicBorderPane;
-
-    @FXML
     private Button butHome;
-
-    @FXML
-    private ToggleButton butDb;
 
     @FXML
     private TextField txtName;
@@ -43,7 +31,7 @@ public class AddCompanyPage {
     private TextField txtShortName;
 
     @FXML
-    private ComboBox<?> comboBoxServicesGroup;
+    private ComboBox<String> comboBoxServicesGroup;
 
     @FXML
     private TextField txtRegistrationNr;
@@ -64,7 +52,12 @@ public class AddCompanyPage {
     private Button butAddCompany;
 
     @FXML
+    private Text informationAboutSuccessful;
+
+    @FXML
     void initialize() {
+        informationAboutSuccessful.setVisible(false);
+        comboBoxSetValues();
 
         butAddCompany.setOnAction(event -> {
             if (checkRequiredFields()) {
@@ -85,6 +78,11 @@ public class AddCompanyPage {
             butHome.getScene().getWindow().hide();
             goToPage("/basicPage.fxml");
         });
+    }
+
+    private void comboBoxSetValues() {
+        comboBoxServicesGroup.setValue(OperatvieDataConstants.GROUP_OF_SERVICES[0]);
+        comboBoxServicesGroup.getItems().addAll(OperatvieDataConstants.GROUP_OF_SERVICES);
     }
 
     private boolean checkPhoneNrisInteger() {
@@ -115,29 +113,34 @@ public class AddCompanyPage {
         if (dbManagment.checkCompanyShortName(txtShortName.getText())) {
             return true;
         }
-        alarmPopUpWindow("šāds uzņēmuma īsais nosaukums: "+ txtShortName.getText()+ ", jau reģistrēts");
+        alarmPopUpWindow("šāds uzņēmuma īsais nosaukums: " + txtShortName.getText() + ", jau reģistrēts");
         return false;
     }
 
     private void registerCompany() throws SQLException {
         Companies company = new Companies();
+
         company.setCompanyName(txtName.getText().trim());
         company.setCompanyShortName(txtShortName.getText().trim());
-        company.setCompanyBaseProductGroup("degviela");// šo jāpapildina ar combobox
-        company.setCompanyBaseProductToBusiness("partly"); // šeit jāsataisa lai paņem automātiski
+        company.setCompanyBaseProductGroup(comboBoxServicesGroup.getValue());
         company.setCompanyAddress(txtAdress.getText().trim());
         company.setCompanyEMail(txtEMail.getText().trim());
         company.setCompanyBankData(txtAccount.getText().trim());
-
-        if(!txtRegistrationNr.getText().trim().equals("")) {
-            company.setCompanyBankData(txtAccount.getText().trim());
-        }
-        if (!txtPhone.getText().trim().equals("")) {
+        company.setCompanyBaseProductToBusiness(OperatvieDataConstants.getAttentionProductToBusiness(comboBoxServicesGroup.getValue()));
+        if (!txtPhone.getText().equals("")) {
             company.setCompanyPhone(parseInt(txtPhone.getText().trim()));
+        }
+        if (!txtRegistrationNr.getText().trim().equals("")) {
+            company.setCompanyBankData(txtAccount.getText().trim());
         }
 
         DbManagment dbManagment = new DbManagment();
         dbManagment.companyRegistration(company);
+
+        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        delay.setOnFinished(e -> informationAboutSuccessful.setVisible(false));
+        informationAboutSuccessful.setVisible(true);
+        delay.play();
 
     }
 

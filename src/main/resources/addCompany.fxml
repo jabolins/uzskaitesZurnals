@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddCompanyPage">
    <top>
@@ -66,6 +67,11 @@
                               <Label layoutX="36.0" layoutY="367.0" text="bankas konts" />
                               <TextField fx:id="txtAccount" layoutX="231.0" layoutY="363.0" prefHeight="25.0" prefWidth="209.0" promptText="bankas konts" />
                               <Button fx:id="butAddCompany" layoutX="326.0" layoutY="411.0" mnemonicParsing="false" text="pievienot " />
+                              <Text fx:id="informationAboutSuccessful" fill="#19612c" layoutX="546.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pievienošana veiksmīga">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Text>
                            </children>
                            <opaqueInsets>
                               <Insets />
