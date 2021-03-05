@@ -39,8 +39,8 @@ public class DbParvaldibaTest {
 
     @Test
     public void shouldGetAllCompanies() throws SQLException {
-        DbManagment dbParvaldiba = new DbManagment();
-        ArrayList<Companies> allCompanies = dbParvaldiba.getAllCompanies();
+        DbManagment dbManagment = new DbManagment();
+        ArrayList<Companies> allCompanies = dbManagment.getAllCompanies();
         for (Companies companies : allCompanies) {
             System.out.println("Nosaukums: " + companies.getCompanyName());
             System.out.println("Saīsinātais nosaukums: " + companies.getCompanyShortName());
@@ -49,5 +49,19 @@ public class DbParvaldibaTest {
             System.out.println("Telefons: " + companies.getCompanyPhone());
             System.out.println("Reģistrāciajas nr: " + companies.getCompanyRegistrationNr());
         }
+    }
+
+    @Test
+    public void shoulCompanyNameBeUnique() throws SQLException {
+        DbManagment dbManagment = new DbManagment();
+        boolean actualResult = dbManagment.checkCompanyShortName("Nepareizais");
+        Assert.assertTrue(dbManagment.checkCompanyShortName("Nepareizais"));
+    }
+
+    @Test
+    public void shouldntCompanyNameBeUnique() throws SQLException {
+        DbManagment dbManagment = new DbManagment();
+        boolean actualResult = dbManagment.checkCompanyShortName("Testa");
+        Assert.assertFalse(dbManagment.checkCompanyShortName("Testa"));
     }
 }

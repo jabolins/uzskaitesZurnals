@@ -5,35 +5,35 @@ import java.util.ArrayList;
 
 public class DbManagment {
 
-    Connection dbPieslegums;
+    Connection dataBaseConnection;
 
     public Connection getConnectionDatabase() throws SQLException {
 
         String pieslegumaCels = "jdbc:mysql://" + DateBaseConstants.DB_HOST + ":" + DateBaseConstants.DB_PORT + "/" + DateBaseConstants.DB_NAME;
 
-        dbPieslegums = DriverManager.getConnection(pieslegumaCels, DateBaseConstants.DB_USER, DateBaseConstants.DB_PASS);
-        return dbPieslegums;
+        dataBaseConnection = DriverManager.getConnection(pieslegumaCels, DateBaseConstants.DB_USER, DateBaseConstants.DB_PASS);
+        return dataBaseConnection;
     }
 
-    public void userRegistration(User jaunslietotajs) {
+    public void userRegistration(User jaunslietotajs) throws SQLException {
         String ievade = "INSERT INTO " + DateBaseConstants.TABLE_LIETOTAJI + "(" + DateBaseConstants.LIET_LIETOTAJVARDS + ","
                 + DateBaseConstants.LIET_PAROLE + "," + DateBaseConstants.LIET_E_PASTS + "," + DateBaseConstants.LIET_LOMA + ")" + " VALUES(?,?,?,?)";
 
         try {
-            PreparedStatement ievadamieDati = getConnectionDatabase().prepareStatement(ievade);
-            ievadamieDati.setString(1, jaunslietotajs.getLietotajvards());
-            ievadamieDati.setString(2, jaunslietotajs.getParole());
-            ievadamieDati.setString(3, jaunslietotajs.getEpasts());
-            ievadamieDati.setString(4, jaunslietotajs.getLoma());
+            PreparedStatement inputValues = getConnectionDatabase().prepareStatement(ievade);
+            inputValues.setString(1, jaunslietotajs.getLietotajvards());
+            inputValues.setString(2, jaunslietotajs.getParole());
+            inputValues.setString(3, jaunslietotajs.getEpasts());
+            inputValues.setString(4, jaunslietotajs.getLoma());
 
-            ievadamieDati.executeUpdate();
+            inputValues.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-
+dataBaseConnection.close();
     }
 
-    public ResultSet getUserDate(String lietotajvards, String parole, String loma) { // šo varbūt vajadzētu pārveidot lai ir objekts lietotājas un tā laukus
+    public ResultSet getUserDate(String lietotajvards, String parole, String loma) throws SQLException { // šo varbūt vajadzētu pārveidot lai ir objekts lietotājas un tā laukus
         ResultSet atgriezamaVertiba = null; // sākumā pieņemam ka nekas netiks atrasts
 
         String atlase = "SELECT * FROM " + DateBaseConstants.TABLE_LIETOTAJI + " WHERE " + DateBaseConstants.LIET_LIETOTAJVARDS + "=? AND "
@@ -51,11 +51,12 @@ public class DbManagment {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        dataBaseConnection.close();
         return atgriezamaVertiba;
     } // atgriež no datu bāzes lietotājvārdu,
     // paroli un lomu. ir OK
 
-    public void companyRegistration(Companies newCompany) {
+    public void companyRegistration(Companies newCompany) throws SQLException {
         String input = "INSERT INTO " + DateBaseConstants.TABLE_UZNEMUMI +
                 "(" + DateBaseConstants.COMPANY_NAME +
                 "," + DateBaseConstants.COMPANY_sHORT_NAME +
@@ -84,33 +85,51 @@ public class DbManagment {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        dataBaseConnection.close();
+    }
+    public boolean checkCompanyShortName(String companyShortName) throws SQLException {
+        int countOfCompanies=0;
+        String query = "SELECT * FROM " + DateBaseConstants.TABLE_UZNEMUMI + " WHERE "
+                + DateBaseConstants.COMPANY_sHORT_NAME + "=" + "?";
 
+        PreparedStatement statement = getConnectionDatabase().prepareStatement(query);
+        statement.setString(1, companyShortName);
+        ResultSet resultSet = statement.executeQuery();
+        while(resultSet.next()){
+          countOfCompanies++;
+        }
+        if (countOfCompanies>0){
+            dataBaseConnection.close();
+            return false;
+        }
+        dataBaseConnection.close();
+        return true;
     }
 
-    public Companies getCompanyData(String shortCompanyName) throws SQLException {
-        Companies meklejamaisCompanies = new Companies();
+    public Companies getCompanyData(String companyShortName) throws SQLException {
+        Companies findingCompany = new Companies();
 
         String query = "SELECT * FROM " + DateBaseConstants.TABLE_UZNEMUMI + " WHERE "
                 + DateBaseConstants.COMPANY_sHORT_NAME + "=" + "?";
 
         PreparedStatement statement = getConnectionDatabase().prepareStatement(query);
-        statement.setString(1, shortCompanyName);
+        statement.setString(1, companyShortName);
         ResultSet resultSet = statement.executeQuery();
 
         while (resultSet.next()) {
-            meklejamaisCompanies.setCompanyName(resultSet.getString("nosaukums"));
-            meklejamaisCompanies.setCompanyShortName(resultSet.getString("saisinataisNosaukums"));
-            meklejamaisCompanies.setCompanyBaseProductGroup(resultSet.getString("pamatprodukts"));
-            meklejamaisCompanies.setCompanyBaseProductToBusiness(resultSet.getString("saistibaUznemejdarbibai"));
-            meklejamaisCompanies.setCompanyAddress(resultSet.getString("adrese"));
-            meklejamaisCompanies.setCompanyEMail(resultSet.getString("epasts"));
-            meklejamaisCompanies.setCompanyRegistrationNr(resultSet.getString("regNr"));
-            meklejamaisCompanies.setCompanyBankData(resultSet.getString("konts"));
-            meklejamaisCompanies.setCompanyPhone(resultSet.getInt("telefons"));
+            findingCompany.setCompanyName(resultSet.getString("nosaukums"));
+            findingCompany.setCompanyShortName(resultSet.getString("saisinataisNosaukums"));
+            findingCompany.setCompanyBaseProductGroup(resultSet.getString("pamatprodukts"));
+            findingCompany.setCompanyBaseProductToBusiness(resultSet.getString("saistibaUznemejdarbibai"));
+            findingCompany.setCompanyAddress(resultSet.getString("adrese"));
+            findingCompany.setCompanyEMail(resultSet.getString("epasts"));
+            findingCompany.setCompanyRegistrationNr(resultSet.getString("regNr"));
+            findingCompany.setCompanyBankData(resultSet.getString("konts"));
+            findingCompany.setCompanyPhone(resultSet.getInt("telefons"));
 
         }
-
-        return meklejamaisCompanies;
+        dataBaseConnection.close();
+        return findingCompany;
     }
 
     public ArrayList<Companies> getAllCompanies() throws SQLException {
@@ -133,6 +152,7 @@ public class DbManagment {
             companies.setCompanyPhone(resultSet.getInt("telefons"));
             allCompanies.add(companies);
         }
+        dataBaseConnection.close();
         return allCompanies;
     }
 }

@@ -8,13 +8,11 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddCompanyPage">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddCompanyPage">
    <top>
       <BorderPane fx:id="basicBorderPane" prefHeight="80.0" style="-fx-background-color: #B2BABB;" BorderPane.alignment="CENTER">
          <left>
@@ -25,7 +23,7 @@
             </Button>
          </left>
          <center>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Uzskaites žurnāls" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Pievienot uzņēmumu" BorderPane.alignment="CENTER">
                <font>
                   <Font size="24.0" />
                </font>
@@ -37,14 +35,6 @@
          <padding>
             <Insets left="10.0" right="10.0" />
          </padding>
-         <right>
-            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Label text="Pieslēgties datu bāzei" textAlignment="CENTER" wrapText="true" />
-                  <ToggleButton fx:id="butDb" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #F26E07;" text="Strādā lokāli" textAlignment="CENTER" wrapText="true" />
-               </children>
-            </VBox>
-         </right>
       </BorderPane>
    </top>
    <center>
@@ -63,19 +53,19 @@
                               <TextField fx:id="txtShortName" layoutX="246.0" layoutY="79.0" prefHeight="25.0" prefWidth="208.0" promptText="uzņēmuma saīsinātais nosaukums" />
                               <ComboBox fx:id="comboBoxServicesGroup" layoutX="247.0" layoutY="115.0" prefHeight="25.0" prefWidth="205.0" />
                               <Label layoutX="68.0" layoutY="119.0" text="pakalpojumu grupa (pamata)" />
-                              <Separator layoutY="265.0" prefHeight="0.0" prefWidth="800.0" />
-                              <Label layoutX="312.0" layoutY="287.0" text="papildus informācija" />
-                              <Label layoutX="36.0" layoutY="316.0" text="reģstrācijas Nr" />
-                              <TextField fx:id="txtRegistrationNr" layoutX="231.0" layoutY="312.0" prefHeight="25.0" prefWidth="209.0" promptText="reģstrācijas Nr" />
-                              <Label layoutX="36.0" layoutY="349.0" text="adrese" />
-                              <TextField fx:id="txtAdress" layoutX="231.0" layoutY="345.0" prefHeight="25.0" prefWidth="209.0" promptText="adrese" />
-                              <Label layoutX="36.0" layoutY="386.0" text="telefons" />
-                              <TextField fx:id="txtPhone" layoutX="231.0" layoutY="382.0" prefHeight="25.0" prefWidth="209.0" promptText="telefons" />
-                              <Label layoutX="36.0" layoutY="422.0" text="e-pasts" />
-                              <TextField fx:id="txtEMail" layoutX="231.0" layoutY="418.0" prefHeight="25.0" prefWidth="209.0" promptText="e-pasts" />
-                              <Label layoutX="36.0" layoutY="463.0" text="bankas konts" />
-                              <TextField fx:id="txtAccount" layoutX="231.0" layoutY="459.0" prefHeight="25.0" prefWidth="209.0" promptText="bankas konts" />
-                              <Button fx:id="butAddCompany" layoutX="326.0" layoutY="507.0" mnemonicParsing="false" text="pievienot " />
+                              <Separator layoutY="164.0" prefHeight="0.0" prefWidth="800.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+                              <Label layoutX="312.0" layoutY="191.0" text="papildus informācija" />
+                              <Label layoutX="36.0" layoutY="220.0" text="reģstrācijas Nr" />
+                              <TextField fx:id="txtRegistrationNr" layoutX="231.0" layoutY="216.0" prefHeight="25.0" prefWidth="209.0" promptText="reģstrācijas Nr" />
+                              <Label layoutX="36.0" layoutY="253.0" text="adrese" />
+                              <TextField fx:id="txtAdress" layoutX="231.0" layoutY="249.0" prefHeight="25.0" prefWidth="209.0" promptText="adrese" />
+                              <Label layoutX="36.0" layoutY="290.0" text="telefons" />
+                              <TextField fx:id="txtPhone" layoutX="231.0" layoutY="286.0" prefHeight="25.0" prefWidth="209.0" promptText="telefons" />
+                              <Label layoutX="36.0" layoutY="326.0" text="e-pasts" />
+                              <TextField fx:id="txtEMail" layoutX="231.0" layoutY="322.0" prefHeight="25.0" prefWidth="209.0" promptText="e-pasts" />
+                              <Label layoutX="36.0" layoutY="367.0" text="bankas konts" />
+                              <TextField fx:id="txtAccount" layoutX="231.0" layoutY="363.0" prefHeight="25.0" prefWidth="209.0" promptText="bankas konts" />
+                              <Button fx:id="butAddCompany" layoutX="326.0" layoutY="411.0" mnemonicParsing="false" text="pievienot " />
                            </children>
                            <opaqueInsets>
                               <Insets />
@@ -83,7 +73,7 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                <Tab text="Untitled Tab 2">
+                <Tab text="meklēt /labot uzņēmumu">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
                   </content>
