@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.AddPaymentDocument">
+   <top>
+      <BorderPane fx:id="basicBorderPane" prefHeight="80.0" style="-fx-background-color: #B2BABB;" BorderPane.alignment="CENTER">
+         <left>
+            <Button fx:id="butHome" mnemonicParsing="false" prefHeight="60.0" prefWidth="60.0" text="Home" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </Button>
+         </left>
+         <center>
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Uzskaites žurnāls" BorderPane.alignment="CENTER">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </center>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+         <right>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="Pieslēgties datu bāzei" textAlignment="CENTER" wrapText="true" />
+                  <ToggleButton fx:id="butDb" mnemonicParsing="false" prefHeight="40.0" prefWidth="100.0" style="-fx-background-color: #F26E07;" text="Strādā lokāli" textAlignment="CENTER" wrapText="true" />
+               </children>
+            </VBox>
+         </right>
+      </BorderPane>
+   </top>
+   <center>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <center>
+            <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                <Tab text="pievienot maksājuma dokumentu">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <DatePicker fx:id="data" layoutX="150.0" layoutY="56.0" prefHeight="41.0" prefWidth="174.0" />
+                              <TextField fx:id="docNr" layoutX="150.0" layoutY="109.0" prefHeight="45.0" prefWidth="175.0" promptText="dokumenta Nr">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="companyShortName" layoutX="134.0" layoutY="171.0" prefHeight="46.0" prefWidth="237.0" promptText="uznemuma īsais nosaukums">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <TextField fx:id="companyFullName" editable="false" layoutX="374.0" layoutY="172.0" prefHeight="44.0" prefWidth="414.0" promptText="uzņēmuma pilnais nosaukums">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </TextField>
+                              <ComboBox fx:id="comboBoxProductGroup" layoutX="162.0" layoutY="236.0" prefHeight="41.0" prefWidth="150.0" />
+                              <Label layoutX="5.0" layoutY="248.0" text="izdevumu/ieņemumu grupa" />
+                              <TextField fx:id="sum" layoutX="147.0" layoutY="318.0" prefHeight="30.0" prefWidth="177.0" promptText="summa">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </TextField>
+                              <Button fx:id="buttAdd" layoutX="374.0" layoutY="516.0" mnemonicParsing="false" text="pievienot" />
+                              <RadioButton fx:id="radioYesBusiness" layoutX="358.0" layoutY="227.0" mnemonicParsing="false" text="saisīts ar uzņēmējdarbību">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="attitudeToBusiness" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="radioPartlyBusiness" layoutX="358.0" layoutY="248.0" mnemonicParsing="false" text="daļēji saistīts ar uzņēmējdarbību" toggleGroup="$attitudeToBusiness" />
+                              <RadioButton fx:id="radioNotBusiness" layoutX="358.0" layoutY="269.0" mnemonicParsing="false" text="nesaistīts ar uzņēmējdarbību" toggleGroup="$attitudeToBusiness" />
+                              <Label layoutX="50.0" layoutY="189.0" text="uzņēmums" />
+                              <Label layoutX="16.0" layoutY="120.0" text="dokumenta Nr un veids" />
+                              <Label layoutX="47.0" layoutY="60.0" text="darīījuma datums" />
+                              <RadioButton fx:id="radioIncome" layoutX="377.0" layoutY="24.0" mnemonicParsing="false" text="ieņēmumi">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="incomeExpenses" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="radioExpenses" layoutX="266.0" layoutY="24.0" mnemonicParsing="false" selected="true" text="izdevumi" toggleGroup="$incomeExpenses" />
+                              <RadioButton fx:id="radioCash" layoutX="347.0" layoutY="317.0" mnemonicParsing="false" selected="true" text="kase">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="cashBank" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="radioBank" layoutX="346.0" layoutY="342.0" mnemonicParsing="false" text="banka" toggleGroup="$cashBank" />
+                              <Label layoutX="94.0" layoutY="334.0" text="summa" />
+                              <RadioButton fx:id="radioCheck" layoutX="357.0" layoutY="101.0" mnemonicParsing="false" selected="true" text="čeks">
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="checkTicketOther" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton fx:id="radioTicket" layoutX="358.0" layoutY="120.0" mnemonicParsing="false" text="kvīts" toggleGroup="$checkTicketOther" />
+                              <RadioButton fx:id="radioOtherPaymentMethod" layoutX="357.0" layoutY="140.0" mnemonicParsing="false" text="cits" toggleGroup="$checkTicketOther" />
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+                <Tab text="meklēt/labot maksājuma dokumentu">
+                  <content>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </center></BorderPane>
+   </center>
+</BorderPane>

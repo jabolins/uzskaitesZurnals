@@ -3,7 +3,7 @@ package operativeDate;
 public class OperatvieDataConstants {
     public static final String[] GROUP_OF_SERVICES = new String[]{
             "degviela", "auto rezerves daļas/remonts", "preces birojam", "datortehnika darba", "materiāli darbam",
-            "kancelejas preces", "mārketinga izcevumi", "ar uzņēmējdarbību nesaistīti izdevumi"
+            "kancelejas preces", "mārketinga izcevumi", "transporta izmaksas", "biroja īre", "ar uzņēmējdarbību nesaistīti izdevumi"
     };
 
     public static String getAttentionProductToBusiness(String groupOfServices) {
@@ -17,6 +17,8 @@ public class OperatvieDataConstants {
             case "materiāli darbam":
             case "kancelejas preces":
             case "mārketinga izcevumi":
+            case "transporta izmaksas":
+            case "biroja īre":
                 return "yes";
 
             case "ar uzņēmējdarbību nesaistīti izdevumi":

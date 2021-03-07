@@ -2,6 +2,8 @@ package db;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DbManagment {
 
@@ -30,7 +32,7 @@ public class DbManagment {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-dataBaseConnection.close();
+        dataBaseConnection.close();
     }
 
     public ResultSet getUserDate(String lietotajvards, String parole, String loma) throws SQLException { // šo varbūt vajadzētu pārveidot lai ir objekts lietotājas un tā laukus
@@ -59,7 +61,7 @@ dataBaseConnection.close();
     public void companyRegistration(Companies newCompany) throws SQLException {
         String input = "INSERT INTO " + DateBaseConstants.TABLE_UZNEMUMI +
                 "(" + DateBaseConstants.COMPANY_NAME +
-                "," + DateBaseConstants.COMPANY_sHORT_NAME +
+                "," + DateBaseConstants.COMPANY_SHORT_NAME +
                 "," + DateBaseConstants.COMPANY_BASIC_PRODUCT_GROUP +
                 "," + DateBaseConstants.PRODUCT_ATTENTION_TO_BUSINESS +
                 "," + DateBaseConstants.COMPANY_REGISTRATION_NR +
@@ -87,18 +89,19 @@ dataBaseConnection.close();
         }
         dataBaseConnection.close();
     }
+
     public boolean checkCompanyShortName(String companyShortName) throws SQLException {
-        int countOfCompanies=0;
+        int countOfCompanies = 0;
         String query = "SELECT * FROM " + DateBaseConstants.TABLE_UZNEMUMI + " WHERE "
-                + DateBaseConstants.COMPANY_sHORT_NAME + "=" + "?";
+                + DateBaseConstants.COMPANY_SHORT_NAME + "=" + "?";
 
         PreparedStatement statement = getConnectionDatabase().prepareStatement(query);
         statement.setString(1, companyShortName);
         ResultSet resultSet = statement.executeQuery();
-        while(resultSet.next()){
-          countOfCompanies++;
+        while (resultSet.next()) {
+            countOfCompanies++;
         }
-        if (countOfCompanies>0){
+        if (countOfCompanies > 0) {
             dataBaseConnection.close();
             return false;
         }
@@ -110,7 +113,7 @@ dataBaseConnection.close();
         Companies findingCompany = new Companies();
 
         String query = "SELECT * FROM " + DateBaseConstants.TABLE_UZNEMUMI + " WHERE "
-                + DateBaseConstants.COMPANY_sHORT_NAME + "=" + "?";
+                + DateBaseConstants.COMPANY_SHORT_NAME + "=" + "?";
 
         PreparedStatement statement = getConnectionDatabase().prepareStatement(query);
         statement.setString(1, companyShortName);
@@ -141,18 +144,116 @@ dataBaseConnection.close();
 
         while (resultSet.next()) {
             Companies companies = new Companies();
-            companies.setCompanyName(resultSet.getString("nosaukums"));
-            companies.setCompanyShortName(resultSet.getString("saisinataisNosaukums"));
-            companies.setCompanyBaseProductGroup(resultSet.getString("pamatprodukts"));
-            companies.setCompanyBaseProductToBusiness(resultSet.getString("saistibaUznemejdarbibai"));
-            companies.setCompanyAddress(resultSet.getString("adrese"));
-            companies.setCompanyEMail(resultSet.getString("epasts"));
-            companies.setCompanyRegistrationNr(resultSet.getString("regNr"));
-            companies.setCompanyBankData(resultSet.getString("konts"));
-            companies.setCompanyPhone(resultSet.getInt("telefons"));
+            companies.setCompanyName(resultSet.getString(DateBaseConstants.COMPANY_NAME));
+            companies.setCompanyShortName(resultSet.getString(DateBaseConstants.COMPANY_SHORT_NAME));
+            companies.setCompanyBaseProductGroup(resultSet.getString(DateBaseConstants.COMPANY_BASIC_PRODUCT_GROUP));
+            companies.setCompanyBaseProductToBusiness(resultSet.getString(DateBaseConstants.PRODUCT_ATTENTION_TO_BUSINESS));
+            companies.setCompanyAddress(resultSet.getString(DateBaseConstants.COMPANY_ADDRESS));
+            companies.setCompanyEMail(resultSet.getString(DateBaseConstants.COMPANY_E_MAIL));
+            companies.setCompanyRegistrationNr(resultSet.getString(DateBaseConstants.COMPANY_REGISTRATION_NR));
+            companies.setCompanyBankData(resultSet.getString(DateBaseConstants.COMPANY_ACCOUNT));
+            companies.setCompanyPhone(resultSet.getInt(DateBaseConstants.COMPANY_PHONE));
             allCompanies.add(companies);
         }
         dataBaseConnection.close();
         return allCompanies;
     }
+
+    public ArrayList<String> getAllCompaniesShortNames() throws SQLException {
+        ArrayList<String> allCompaniesShortNames = new ArrayList<>();
+        String query = "SELECT " + DateBaseConstants.COMPANY_SHORT_NAME + " FROM " + DateBaseConstants.TABLE_UZNEMUMI;
+        Statement statement = getConnectionDatabase().createStatement();
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            allCompaniesShortNames.add(resultSet.getString(DateBaseConstants.COMPANY_SHORT_NAME));
+        }
+        dataBaseConnection.close();
+        return allCompaniesShortNames;
+    }
+
+    public Map<String, String> getShortNameFullNameOfCompanies() throws SQLException {
+        Map<String, String> shortNamesFullNamesOfCompanies= new HashMap<>();
+
+        String query = "SELECT "+ DateBaseConstants.COMPANY_SHORT_NAME+ " , "+ DateBaseConstants.COMPANY_NAME+ " FROM " + DateBaseConstants.TABLE_UZNEMUMI;
+        Statement statement = getConnectionDatabase().createStatement();
+
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            shortNamesFullNamesOfCompanies.put(resultSet.getString(DateBaseConstants.COMPANY_SHORT_NAME), resultSet.getString(DateBaseConstants.COMPANY_NAME));
+        }
+        dataBaseConnection.close();
+        return shortNamesFullNamesOfCompanies;
+    }
+
+    public Map<String, Companies> getShortNameToFullCompanyMap() throws SQLException {
+        Map<String, Companies> ShortNameToFullCompanyMap= new HashMap<>();
+
+        String query = "SELECT * FROM " + DateBaseConstants.TABLE_UZNEMUMI;
+        Statement statement = getConnectionDatabase().createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            Companies company = new Companies();
+            company.setCompanyName(resultSet.getString(DateBaseConstants.COMPANY_NAME));
+            company.setCompanyShortName(resultSet.getString(DateBaseConstants.COMPANY_SHORT_NAME));
+            company.setCompanyBaseProductGroup(resultSet.getString(DateBaseConstants.COMPANY_BASIC_PRODUCT_GROUP));
+            company.setCompanyBaseProductToBusiness(resultSet.getString(DateBaseConstants.PRODUCT_ATTENTION_TO_BUSINESS));
+            company.setCompanyAddress(resultSet.getString(DateBaseConstants.COMPANY_ADDRESS));
+            company.setCompanyEMail(resultSet.getString(DateBaseConstants.COMPANY_E_MAIL));
+            company.setCompanyRegistrationNr(resultSet.getString(DateBaseConstants.COMPANY_REGISTRATION_NR));
+            company.setCompanyBankData(resultSet.getString(DateBaseConstants.COMPANY_ACCOUNT));
+            company.setCompanyPhone(resultSet.getInt(DateBaseConstants.COMPANY_PHONE));
+
+            ShortNameToFullCompanyMap.put(resultSet.getString(DateBaseConstants.COMPANY_SHORT_NAME), company);
+        }
+        dataBaseConnection.close();
+        return ShortNameToFullCompanyMap;
+
+    }
+
+    public void paymentRegistration(Payment newPayment) throws SQLException {
+        String input = "INSERT INTO " + DateBaseConstants.TABLE_FINDOC +
+                "(" + DateBaseConstants.FINDOC_DATE +
+                "," + DateBaseConstants.FINDOC_DOC_NR +
+                "," + DateBaseConstants.FINDOC_COMPANY +
+                "," + DateBaseConstants.FINDOC_DESCRIPTION_OF_DEAL +
+                "," + DateBaseConstants.FINDOC_CASH_RECEIVED +
+                "," + DateBaseConstants.FINDOC_CASH_ISSUED +
+                "," + DateBaseConstants.FINDOC_BANK_RECEIVED +
+                "," + DateBaseConstants.FINDOC_BANK_ISSUED +
+                "," + DateBaseConstants.FINDOC_INCOME_BUSINESS_NOT_FARMING +
+                "," + DateBaseConstants.FINDOC_INCOME_NOT_FOR_TAX +
+                "," + DateBaseConstants.FINDOC_TOTAL_INCOME +
+                "," + DateBaseConstants.FINDOC_EXPENSES_BUSINESS_NOT_FARMING +
+                "," + DateBaseConstants.FINDOC_EXPENSNES_NOT_FOR_BUSINESS +
+                "," + DateBaseConstants.FINDOC_TOTAL_EXPENSES +
+                ")" + " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        try {
+            PreparedStatement preparedStatement = getConnectionDatabase().prepareStatement(input);
+            preparedStatement.setDate(1, java.sql.Date.valueOf(newPayment.getDate()));
+            preparedStatement.setString(2, newPayment.getDocumentNr());
+            preparedStatement.setString(3, newPayment.getCompany());
+            preparedStatement.setString(4, newPayment.getDescriptionOfDeal());
+            preparedStatement.setDouble(5, newPayment.getCashReceived());
+            preparedStatement.setDouble(6, newPayment.getCashIssued());
+            preparedStatement.setDouble(7, newPayment.getBankReceived());
+            preparedStatement.setDouble(8, newPayment.getBankIssued());
+            preparedStatement.setDouble(9, newPayment.getIncomeBusinessNotFarming());
+            preparedStatement.setDouble(10, newPayment.getIncomeNotForTax());
+            preparedStatement.setDouble(11, newPayment.getTotalIncome());
+            preparedStatement.setDouble(12, newPayment.getExpensesBusinessNotFarming());
+            preparedStatement.setDouble(13, newPayment.getExpensesNotForBusiness());
+            preparedStatement.setDouble(14, newPayment.getTotalExpenses());
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        dataBaseConnection.close();
+    }
+
 }

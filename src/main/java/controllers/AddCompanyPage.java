@@ -61,7 +61,7 @@ public class AddCompanyPage {
 
         butAddCompany.setOnAction(event -> {
             if (checkRequiredFields()) {
-                if (checkPhoneNrisInteger()) {
+                if (checkPhoneNrIsInteger()) {
                     try {
                         if (checkUniqueShortName()) { // jāpieliek pārbaude uz unikālu reģistrācijas nr
 
@@ -85,29 +85,13 @@ public class AddCompanyPage {
         comboBoxServicesGroup.getItems().addAll(OperatvieDataConstants.GROUP_OF_SERVICES);
     }
 
-    private boolean checkPhoneNrisInteger() {
-        if (txtPhone.getText().trim().equals("")) {
-            return true;
-        }
-        try {
-            int phoneNr = Integer.parseInt(txtPhone.getText().trim());
-            System.out.println(phoneNr); // šis ir pārbaudei vēlāk jāizdzēš
-        } catch (NumberFormatException nfe) {
-            alarmPopUpWindow("tālruņa Nr jābūt skaitliskai vērtībai ne vairāk kā 10 cipari");
-            return false;
-        }
-        return true;
-    }
-
     private boolean checkRequiredFields() {
-        if (txtName.getText().equals("") || txtShortName.getText().equals("") || comboBoxServicesGroup.equals("")) { // te vēl
-            // jāsakārto lai ja combobox ir tukšs lai izmet kļūdu
+        if (txtName.getText().equals("") || txtShortName.getText().equals("") || comboBoxServicesGroup.getValue().equals("")) {
             alarmPopUpWindow("nav aizpildīti obligātie lauki");
             return false;
         }
         return true;
     }
-
     private boolean checkUniqueShortName() throws SQLException {
         DbManagment dbManagment = new DbManagment();
         if (dbManagment.checkCompanyShortName(txtShortName.getText())) {
@@ -116,7 +100,18 @@ public class AddCompanyPage {
         alarmPopUpWindow("šāds uzņēmuma īsais nosaukums: " + txtShortName.getText() + ", jau reģistrēts");
         return false;
     }
-
+    private boolean checkPhoneNrIsInteger() {
+        if (txtPhone.getText().trim().equals("")) {
+            return true;
+        }
+        try {
+            int phoneNr = Integer.parseInt(txtPhone.getText().trim());
+        } catch (NumberFormatException nfe) {
+            alarmPopUpWindow("tālruņa Nr jābūt skaitliskai vērtībai ne vairāk kā 10 cipari");
+            return false;
+        }
+        return true;
+    }
     private void registerCompany() throws SQLException {
         Companies company = new Companies();
 
@@ -167,5 +162,10 @@ public class AddCompanyPage {
         alert.initStyle(StageStyle.UTILITY);
         alert.showAndWait();
     }
+
+
+
+
+
 
 }

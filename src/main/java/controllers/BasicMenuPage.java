@@ -30,7 +30,7 @@ public class BasicMenuPage {
     private ToggleButton butDb;
 
     @FXML
-    private Button butRetCompany;
+    private Button butRegCompany;
 
     @FXML
     private Button butRegDocument;
@@ -42,9 +42,14 @@ public class BasicMenuPage {
             butHome.getScene().getWindow().hide();
             goToPage("/basicPage.fxml");
         });
-        butRetCompany.setOnAction(event -> {
-            butRetCompany.getScene().getWindow().hide();
+        butRegCompany.setOnAction(event -> {
+            butRegCompany.getScene().getWindow().hide();
             goToPage("/addCompany.fxml");
+        });
+
+        butRegDocument.setOnAction(event -> {
+            butRegDocument.getScene().getWindow().hide();
+            goToPage("/addPaymentDocument.fxml");
         });
     }
 

@@ -10,25 +10,24 @@ public class DateBaseConstants {
     public static final String DB_NAME = "uzskaiteszurnals";
 
     // tabula finanšu dokumenti
-    public static final String TABLE_FINANSUDOK = "finansudokumenti";
+    public static final String TABLE_FINDOC = "finansudokumenti";
 
-    public static final String NR = "1kartasNr";
-    public static final String DATE = "2datums";
-    public static final String DOKUMENT_NR = "3dokVeidsNr";
-    public static final String COMPANY = "4dokAutors";
-    public static final String DESCRIPTION_OF_DEAL = "5darijumaApraksts";
-    public static final String CASH_RECEIVED = "7kaseSanemts";
-    public static final String CASH_ISSUED = "8kaseIzdots";
-    public static final String BANK_RECEIVED = "9bankaSanemts";
-    public static final String BANK_ISSUED = "10bankaIzdots";
-    public static final String INCOME_BUSINESS_NOT_FARMING = "14ienemumiSaimnDarb";
-    public static final String INCOME_NOT_FOR_TAX= "17ienemumiNotSaimnDarb";
-    public static final String TOTAL_INCOME = "18ienemumiKopa";
-    public static final String EXPENSES_BUSINESS_NOT_FARMING = "20izdevumiSaimnDarb";
-    public static final String PROPORTIONATE_EXPENSES = "21izdevumiPropDalami";
-    public static final String EXPENSNES_NOT_FOR_BUSINESS = "22izdevumiNotSaimnDarb";
-    public static final String TOTAL_EXPENSES = "24izdevumiKopa";
-    public static final String ATTITUDE_FOR_BUSINESS = "saistibaArUznemejdarbibu";
+    public static final String FINDOC_DATE = "2datums";
+    public static final String FINDOC_DOC_NR = "3dokVeidsNr";
+    public static final String FINDOC_COMPANY = "4dokAutors";
+    public static final String FINDOC_DESCRIPTION_OF_DEAL = "5darijumaApraksts";
+    public static final String FINDOC_CASH_RECEIVED = "7kaseSanemts";
+    public static final String FINDOC_CASH_ISSUED = "8kaseIzdots";
+    public static final String FINDOC_BANK_RECEIVED = "9bankaSanemts";
+    public static final String FINDOC_BANK_ISSUED = "10bankaIzdots";
+    public static final String FINDOC_INCOME_BUSINESS_NOT_FARMING = "14ienemumiSaimnDarb";
+    public static final String FINDOC_INCOME_NOT_FOR_TAX = "17ienemumiNotSaimnDarb";
+    public static final String FINDOC_TOTAL_INCOME = "18ienemumiKopa";
+    public static final String FINDOC_EXPENSES_BUSINESS_NOT_FARMING = "20izdevumiSaimnDarb";
+    public static final String FINDOC_PROPORTIONATE_EXPENSES = "21izdevumiPropDalami";
+    public static final String FINDOC_EXPENSNES_NOT_FOR_BUSINESS = "22izdevumiNotSaimnDarb";
+    public static final String FINDOC_TOTAL_EXPENSES = "24izdevumiKopa";
+    public static final String FINDOC_ATTITUDE_FOR_BUSINESS = "saistibaArUznemejdarbibu";
 
     // tabula lietotāji
 
@@ -44,7 +43,7 @@ public class DateBaseConstants {
     public static final String TABLE_UZNEMUMI = "uznemumi";
 
     public static final String COMPANY_NAME = "nosaukums";
-    public static final String COMPANY_sHORT_NAME = "saisinataisNosaukums";
+    public static final String COMPANY_SHORT_NAME = "saisinataisNosaukums";
     public static final String COMPANY_REGISTRATION_NR = "regNr";
     public static final String COMPANY_ADDRESS = "adrese";
     public static final String COMPANY_ACCOUNT = "konts";

@@ -45,7 +45,7 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="butRetCompany" layoutX="87.0" layoutY="258.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" text="reģistrēt uzņēmumu" textAlignment="CENTER" wrapText="true" />
+            <Button fx:id="butRegCompany" layoutX="87.0" layoutY="258.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" text="reģistrēt uzņēmumu" textAlignment="CENTER" wrapText="true" />
             <Button fx:id="butRegDocument" layoutX="260.0" layoutY="258.0" mnemonicParsing="false" prefHeight="150.0" prefWidth="150.0" text="reģistrēt maksājuma dokumentu" textAlignment="CENTER" wrapText="true" />
          </children>
       </AnchorPane>
