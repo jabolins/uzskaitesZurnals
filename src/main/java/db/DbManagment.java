@@ -174,9 +174,9 @@ public class DbManagment {
     }
 
     public Map<String, String> getShortNameFullNameOfCompanies() throws SQLException {
-        Map<String, String> shortNamesFullNamesOfCompanies= new HashMap<>();
+        Map<String, String> shortNamesFullNamesOfCompanies = new HashMap<>();
 
-        String query = "SELECT "+ DateBaseConstants.COMPANY_SHORT_NAME+ " , "+ DateBaseConstants.COMPANY_NAME+ " FROM " + DateBaseConstants.TABLE_UZNEMUMI;
+        String query = "SELECT " + DateBaseConstants.COMPANY_SHORT_NAME + " , " + DateBaseConstants.COMPANY_NAME + " FROM " + DateBaseConstants.TABLE_UZNEMUMI;
         Statement statement = getConnectionDatabase().createStatement();
 
         ResultSet resultSet = statement.executeQuery(query);
@@ -189,7 +189,7 @@ public class DbManagment {
     }
 
     public Map<String, Companies> getShortNameToFullCompanyMap() throws SQLException {
-        Map<String, Companies> ShortNameToFullCompanyMap= new HashMap<>();
+        Map<String, Companies> ShortNameToFullCompanyMap = new HashMap<>();
 
         String query = "SELECT * FROM " + DateBaseConstants.TABLE_UZNEMUMI;
         Statement statement = getConnectionDatabase().createStatement();
@@ -256,4 +256,61 @@ public class DbManagment {
         dataBaseConnection.close();
     }
 
+
+    public ArrayList<Payment> getAllPayments() throws SQLException {
+        ArrayList<Payment> allPayments = new ArrayList<>();
+
+        String query = "SELECT * FROM " + DateBaseConstants.TABLE_FINDOC+ " ORDER BY "+DateBaseConstants.FINDOC_DATE+ " ASC" ;
+        Statement statement = getConnectionDatabase().createStatement();
+        ResultSet resultSet = statement.executeQuery(query);
+
+        while (resultSet.next()) {
+            Payment payment = new Payment();
+            payment.setDate(resultSet.getDate(DateBaseConstants.FINDOC_DATE).toLocalDate());
+            if (resultSet.getString(DateBaseConstants.FINDOC_DOC_NR) != null) {
+                payment.setDocumentNr(resultSet.getString(DateBaseConstants.FINDOC_DOC_NR));
+            }
+            if (resultSet.getString(DateBaseConstants.FINDOC_COMPANY) != null) {
+                payment.setCompany(resultSet.getString(DateBaseConstants.FINDOC_COMPANY));
+            }
+            if (resultSet.getString(DateBaseConstants.FINDOC_DESCRIPTION_OF_DEAL) != null) {
+                payment.setDescriptionOfDeal(resultSet.getString(DateBaseConstants.FINDOC_DESCRIPTION_OF_DEAL));
+            }
+            if (resultSet.getDouble(DateBaseConstants.FINDOC_CASH_RECEIVED) != 0) {
+                payment.setCashIncomes(resultSet.getDouble(DateBaseConstants.FINDOC_CASH_RECEIVED));
+            }
+            if (resultSet.getDouble(DateBaseConstants.FINDOC_CASH_ISSUED) != 0) {
+                payment.setCashExpenses(resultSet.getDouble(DateBaseConstants.FINDOC_CASH_ISSUED));
+            }
+            if (resultSet.getDouble(DateBaseConstants.FINDOC_BANK_RECEIVED) != 0) {
+                payment.setBankIncomes(resultSet.getDouble(DateBaseConstants.FINDOC_BANK_RECEIVED));
+            }
+            if (resultSet.getDouble(DateBaseConstants.FINDOC_BANK_ISSUED) != 0) {
+                payment.setBankExpenses(resultSet.getDouble(DateBaseConstants.FINDOC_BANK_ISSUED));
+            }
+            if (resultSet.getDouble(DateBaseConstants.FINDOC_INCOME_BUSINESS_NOT_FARMING) != 0) {
+                payment.setIncomeBusinessNotFarming(resultSet.getDouble(DateBaseConstants.FINDOC_INCOME_BUSINESS_NOT_FARMING));
+            }
+            if (resultSet.getDouble(DateBaseConstants.FINDOC_INCOME_NOT_FOR_TAX) != 0) {
+                payment.setIncomeNotForTax(resultSet.getDouble(DateBaseConstants.FINDOC_INCOME_NOT_FOR_TAX));
+            }
+
+            payment.setTotalIncome(resultSet.getDouble(DateBaseConstants.FINDOC_TOTAL_INCOME));
+
+            if (resultSet.getDouble(DateBaseConstants.FINDOC_EXPENSES_BUSINESS_NOT_FARMING) != 0) {
+                payment.setExpensesBusinessNotFarming(resultSet.getDouble(DateBaseConstants.FINDOC_EXPENSES_BUSINESS_NOT_FARMING));
+            }
+            if (resultSet.getDouble(DateBaseConstants.FINDOC_EXPENSNES_NOT_FOR_BUSINESS) != 0) {
+                payment.setExpensesNotForBusiness(resultSet.getDouble(DateBaseConstants.FINDOC_EXPENSNES_NOT_FOR_BUSINESS));
+            }
+
+            payment.setTotalExpenses(resultSet.getDouble(DateBaseConstants.FINDOC_TOTAL_EXPENSES));
+
+
+            allPayments.add(payment);
+        }
+        dataBaseConnection.close();
+        return allPayments;
+
+    }
 }

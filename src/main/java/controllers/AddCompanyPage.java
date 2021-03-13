@@ -1,28 +1,56 @@
 package controllers;
 
-import java.io.IOException;
 import java.sql.SQLException;
 
-import db.Companies;
 import db.DbManagment;
-import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.util.Duration;
 import operativeDate.OperatvieDataConstants;
-
-import static java.lang.Integer.parseInt;
 
 public class AddCompanyPage {
 
+    private final AlarmMessages alarmMessages = new AlarmMessages();
+    private final PageTransition pageTransition = new PageTransition();
+    private final RegisterCompany registerCompany = new RegisterCompany(this);
     @FXML
     private Button butHome;
+
+    public TextField getTxtName() {
+        return txtName;
+    }
+
+    public TextField getTxtShortName() {
+        return txtShortName;
+    }
+
+    public ComboBox<String> getComboBoxServicesGroup() {
+        return comboBoxServicesGroup;
+    }
+
+    public TextField getTxtRegistrationNr() {
+        return txtRegistrationNr;
+    }
+
+    public TextField getTxtAdress() {
+        return txtAdress;
+    }
+
+    public TextField getTxtPhone() {
+        return txtPhone;
+    }
+
+    public TextField getTxtEMail() {
+        return txtEMail;
+    }
+
+    public TextField getTxtAccount() {
+        return txtAccount;
+    }
+
+    public Text getInformationAboutSuccessful() {
+        return informationAboutSuccessful;
+    }
 
     @FXML
     private TextField txtName;
@@ -63,9 +91,9 @@ public class AddCompanyPage {
             if (checkRequiredFields()) {
                 if (checkPhoneNrIsInteger()) {
                     try {
-                        if (checkUniqueShortName()) { // jāpieliek pārbaude uz unikālu reģistrācijas nr
+                        if (checkUniqueShortName()) { // TODO jāpieliek pārbaude uz unikālu reģistrācijas nr
 
-                            registerCompany();
+                            registerCompany.registerCompany();
                         }
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
@@ -76,7 +104,7 @@ public class AddCompanyPage {
 
         butHome.setOnAction(event -> {
             butHome.getScene().getWindow().hide();
-            goToPage("/basicPage.fxml");
+            pageTransition.goToPage("/basicPage.fxml");
         });
     }
 
@@ -87,7 +115,7 @@ public class AddCompanyPage {
 
     private boolean checkRequiredFields() {
         if (txtName.getText().equals("") || txtShortName.getText().equals("") || comboBoxServicesGroup.getValue().equals("")) {
-            alarmPopUpWindow("nav aizpildīti obligātie lauki");
+            alarmMessages.alarmPopUpWindow("nav aizpildīti obligātie lauki");
             return false;
         }
         return true;
@@ -97,9 +125,10 @@ public class AddCompanyPage {
         if (dbManagment.checkCompanyShortName(txtShortName.getText())) {
             return true;
         }
-        alarmPopUpWindow("šāds uzņēmuma īsais nosaukums: " + txtShortName.getText() + ", jau reģistrēts");
+        alarmMessages.alarmPopUpWindow("šāds uzņēmuma īsais nosaukums: " + txtShortName.getText() + ", jau reģistrēts");
         return false;
     }
+
     private boolean checkPhoneNrIsInteger() {
         if (txtPhone.getText().trim().equals("")) {
             return true;
@@ -107,65 +136,9 @@ public class AddCompanyPage {
         try {
             int phoneNr = Integer.parseInt(txtPhone.getText().trim());
         } catch (NumberFormatException nfe) {
-            alarmPopUpWindow("tālruņa Nr jābūt skaitliskai vērtībai ne vairāk kā 10 cipari");
+            alarmMessages.alarmPopUpWindow("tālruņa Nr jābūt skaitliskai vērtībai ne vairāk kā 10 cipari");
             return false;
         }
         return true;
     }
-    private void registerCompany() throws SQLException {
-        Companies company = new Companies();
-
-        company.setCompanyName(txtName.getText().trim());
-        company.setCompanyShortName(txtShortName.getText().trim());
-        company.setCompanyBaseProductGroup(comboBoxServicesGroup.getValue());
-        company.setCompanyAddress(txtAdress.getText().trim());
-        company.setCompanyEMail(txtEMail.getText().trim());
-        company.setCompanyBankData(txtAccount.getText().trim());
-        company.setCompanyBaseProductToBusiness(OperatvieDataConstants.getAttentionProductToBusiness(comboBoxServicesGroup.getValue()));
-        if (!txtPhone.getText().equals("")) {
-            company.setCompanyPhone(parseInt(txtPhone.getText().trim()));
-        }
-        if (!txtRegistrationNr.getText().trim().equals("")) {
-            company.setCompanyBankData(txtAccount.getText().trim());
-        }
-
-        DbManagment dbManagment = new DbManagment();
-        dbManagment.companyRegistration(company);
-
-        PauseTransition delay = new PauseTransition(Duration.seconds(3));
-        delay.setOnFinished(e -> informationAboutSuccessful.setVisible(false));
-        informationAboutSuccessful.setVisible(true);
-        delay.play();
-
-    }
-
-    private void goToPage(String page) {
-        FXMLLoader load = new FXMLLoader();
-        load.setLocation(getClass().getResource(page));
-        try {
-            load.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Parent run = load.getRoot();
-        Stage stage = new Stage();
-        stage.setTitle("Uzskaites žurnāls");
-        stage.setScene(new Scene(run));
-        stage.show();
-    }
-
-    private void alarmPopUpWindow(String alarmText) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setHeaderText(alarmText);
-        alert.setTitle("Brīdinājums");
-        //alert.setContentText(alarmText);
-        alert.initStyle(StageStyle.UTILITY);
-        alert.showAndWait();
-    }
-
-
-
-
-
-
 }

@@ -1,6 +1,5 @@
 package controllers;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,11 +8,7 @@ import java.util.Map;
 import db.Companies;
 import db.DbManagment;
 import db.Payment;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -22,18 +17,81 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
-import javafx.stage.Stage;
 import operativeDate.OperatvieDataConstants;
-import org.apache.commons.math3.util.Precision;
 import org.controlsfx.control.textfield.TextFields;
 
 
-public class AddPaymentDocument {
+public class AddPaymentDocumentPage {
+    private final RegisterPayment registerPayment = new RegisterPayment(this);
     ArrayList<String> shortNamesOfCompanies = new ArrayList();
     Map<String, Companies> shortNameToFullCompanyMap = new HashMap<>();
+    private final PageTransition pageTransition = new PageTransition();
+
+    public DatePicker getData() {
+        return data;
+    }
+
+    public TextField getDocNr() {
+        return docNr;
+    }
+
+    public TextField getCompanyShortName() {
+        return companyShortName;
+    }
+
+    public TextField getCompanyFullName() {
+        return companyFullName;
+    }
+
+    public ComboBox<String> getComboBoxProductGroup() {
+        return comboBoxProductGroup;
+    }
+
+    public TextField getSum() {
+        return sum;
+    }
+
+    public RadioButton getRadioYesBusiness() {
+        return radioYesBusiness;
+    }
+
+    public RadioButton getRadioPartlyBusiness() {
+        return radioPartlyBusiness;
+    }
+
+    public RadioButton getRadioNotBusiness() {
+        return radioNotBusiness;
+    }
+
+    public RadioButton getRadioIncome() {
+        return radioIncome;
+    }
+
+    public RadioButton getRadioExpenses() {
+        return radioExpenses;
+    }
+
+    public RadioButton getRadioCash() {
+        return radioCash;
+    }
+
+    public RadioButton getRadioBank() {
+        return radioBank;
+    }
+
+    public RadioButton getRadioCheck() {
+        return radioCheck;
+    }
+
+    public RadioButton getRadioTicket() {
+        return radioTicket;
+    }
+
+    public RadioButton getRadioOtherPaymentMethod() {
+        return radioOtherPaymentMethod;
+    }
 
     @FXML
     private BorderPane basicBorderPane;
@@ -114,13 +172,13 @@ public class AddPaymentDocument {
 
         butHome.setOnAction(event -> {
             butHome.getScene().getWindow().hide();
-            goToPage("/basicPage.fxml");
+            pageTransition.goToPage("/basicPage.fxml");
         });
 
         buttAdd.setOnAction(event -> {
             checkFields();
             try {
-                registerPayment();
+                registerPayment.registerPayment();
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
@@ -144,21 +202,6 @@ public class AddPaymentDocument {
         });
     }
 
-    private void goToPage(String page) {
-        FXMLLoader load = new FXMLLoader();
-        load.setLocation(getClass().getResource(page));
-        try {
-            load.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Parent run = load.getRoot();
-        Stage stage = new Stage();
-        stage.setTitle("Uzskaites žurnāls");
-        stage.setScene(new Scene(run));
-        stage.show();
-    }
-
     private void updateShortNameToFullCompanyMap() throws SQLException {
         DbManagment dbManagment = new DbManagment();
         shortNameToFullCompanyMap.putAll(dbManagment.getShortNameToFullCompanyMap());
@@ -169,64 +212,7 @@ public class AddPaymentDocument {
         shortNamesOfCompanies.addAll(dbManagment.getAllCompaniesShortNames());
     }
 
-    private void registerPayment() throws SQLException {
-        Payment payment = new Payment();
-
-        payment.setDate(data.getValue());
-        payment.setDocumentNr(fillDocumentNr());
-        payment.setCompany(companyFullName.getText());
-        payment.setDescriptionOfDeal(comboBoxProductGroup.getValue());
-
-        setPaymentIncomeOrExpense(payment);
-        setPaymentSumToCorrectTaxPlace(payment);
-
-
-        DbManagment dbManagment = new DbManagment();
-        dbManagment.paymentRegistration(payment);
-        System.out.println(payment); // tas pārbaudei, vēlāk jāizdzēš
-    }
-
-    private void setPaymentIncomeOrExpense(Payment payment) {
-        if (radioButtonsDataCollection().equals("cash expenses")) {
-            payment.setCashExpenses(getRoundedPaymentSum());
-            payment.setTotalExpenses(getRoundedPaymentSum());
-        } else if (radioButtonsDataCollection().equals("bank expenses")) {
-            payment.setBankExpenses(getRoundedPaymentSum());
-            payment.setTotalExpenses(getRoundedPaymentSum());
-        } else if (radioButtonsDataCollection().equals("cash incomes")) {
-            payment.setCashIncomes(getRoundedPaymentSum());
-            payment.setTotalIncome(getRoundedPaymentSum());
-        } else if (radioButtonsDataCollection().equals("bank incomes")) {
-            payment.setBankIncomes(getRoundedPaymentSum());
-            payment.setCashIncomes(getRoundedPaymentSum());
-        }
-    }
-
-    private void setPaymentSumToCorrectTaxPlace(Payment payment) {
-        if (radioExpenses.isSelected()) {
-            if (radioYesBusiness.isSelected()) {
-                payment.setExpensesBusinessNotFarming(getRoundedPaymentSum());
-            } else if (radioNotBusiness.isSelected()) {
-                payment.setExpensesNotForBusiness(getRoundedPaymentSum());
-            } else if (radioPartlyBusiness.isSelected()) {
-                payment.setExpensesBusinessNotFarming(getRoundedPaymentSum() / 2);
-                payment.setExpensesNotForBusiness(getRoundedPaymentSum() / 2);
-            }
-        } else if (radioIncome.isSelected()) {
-            if (radioYesBusiness.isSelected()) {
-                payment.setIncomeBusinessNotFarming(getRoundedPaymentSum());
-            } else if (radioNotBusiness.isSelected()) {
-                payment.setIncomeNotForTax(getRoundedPaymentSum());
-            }
-        }
-    }
-
-    private Double getRoundedPaymentSum() {
-        String correctSum = sum.getText().replace(',', '.');
-        return Precision.round(Double.parseDouble(correctSum), 2);
-    }
-
-    private String radioButtonsDataCollection() {
+    String radioButtonsDataCollection() {
         String radioButtonsDataCollection = null;
         if (radioCash.isSelected()) if (radioExpenses.isSelected()) {
             radioButtonsDataCollection = "cash expenses";
@@ -242,7 +228,7 @@ public class AddPaymentDocument {
         return radioButtonsDataCollection;
     }
 
-    private String fillDocumentNr() {
+    String fillDocumentNr() {
         String correctDocumentNrAndType;
         if (radioCheck.isSelected()) {
             correctDocumentNrAndType = "Čeks " + docNr.getText();

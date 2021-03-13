@@ -13,6 +13,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class BasicMenuPage {
+    private final PageTransition pageTransition = new PageTransition();
 
     @FXML
     private ResourceBundle resources;
@@ -40,31 +41,17 @@ public class BasicMenuPage {
 
         butHome.setOnAction(event -> {
             butHome.getScene().getWindow().hide();
-            goToPage("/basicPage.fxml");
+            pageTransition.goToPage("/basicPage.fxml");
         });
         butRegCompany.setOnAction(event -> {
             butRegCompany.getScene().getWindow().hide();
-            goToPage("/addCompany.fxml");
+            pageTransition.goToPage("/addCompany.fxml");
         });
 
         butRegDocument.setOnAction(event -> {
             butRegDocument.getScene().getWindow().hide();
-            goToPage("/addPaymentDocument.fxml");
+            pageTransition.goToPage("/addPaymentDocument.fxml");
         });
     }
 
-    private void goToPage(String page) {
-        FXMLLoader load = new FXMLLoader();
-        load.setLocation(getClass().getResource(page));
-        try {
-            load.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Parent run = load.getRoot();
-        Stage stage = new Stage();
-        stage.setTitle("Uzskaites žurnāls");
-        stage.setScene(new Scene(run));
-        stage.show();
-    }
 }

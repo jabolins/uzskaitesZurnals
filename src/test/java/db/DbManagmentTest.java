@@ -118,4 +118,14 @@ public class DbManagmentTest {
         DbManagment dbManagment= new DbManagment();
         dbManagment.paymentRegistration(payment);
     }
+
+    @Test
+    public void getAllPayments() throws SQLException {
+        DbManagment dbManagment = new DbManagment();
+        ArrayList<Payment> allPayments= new ArrayList<>();
+        allPayments.addAll(dbManagment.getAllPayments());
+        for(Payment payment: allPayments){
+            System.out.println(payment);
+        }
+    }
 }

@@ -3,6 +3,7 @@ package controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 public class BasicPage {
+    private final PageTransition pageTransition = new PageTransition();
 
     @FXML
     private ResourceBundle resources;
@@ -48,24 +50,10 @@ public class BasicPage {
 
     @FXML
     void initialize() {
- butLogin.setOnAction(event -> {
-     butLogin.getScene().getWindow().hide();
-     goToPage("/basicMenuPage.fxml");
- });
+        butLogin.setOnAction(event -> {
+            butLogin.getScene().getWindow().hide();
+            pageTransition.goToPage("/basicMenuPage.fxml");
+        });
     }
 
-    private void goToPage(String page) {
-        FXMLLoader load = new FXMLLoader();
-        load.setLocation(getClass().getResource(page));
-        try {
-            load.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Parent run = load.getRoot();
-        Stage stage = new Stage();
-        stage.setTitle("Uzskaites žurnāls");
-        stage.setScene(new Scene(run));
-        stage.show();
-    }
 }
