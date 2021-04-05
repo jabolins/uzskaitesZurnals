@@ -9,18 +9,6 @@ public class OperativeDate {
     private ArrayList<Companies> ArrayAllCompanies;
     private ArrayList<String> ArrayCompaniesShortName;
 
-//    public final ArrayList<String> GROUP_OF_SERVICES(ArrayList<String> groupOfServices) { // nezinu vai šādi ir pareizi pierakstīt
-//        this.groupOfServices = groupOfServices;
-//        groupOfServices.add("degviela");
-//        groupOfServices.add("preces birojam");
-//        groupOfServices.add("datortehnika darbam");
-//        groupOfServices.add("materiāli darbam");
-//        groupOfServices.add("kancelejas preces");
-//        groupOfServices.add("mārketinga izdevumi");
-//        groupOfServices.add("ar uzņējdarbību nesaisīts");
-//        return groupOfServices;
-//    }
-
     private ArrayList<String> groupOfServices;
 
     public ArrayList<Companies> getArrayAllCompanies() {

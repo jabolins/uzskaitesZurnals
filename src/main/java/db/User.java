@@ -3,47 +3,47 @@ package db;
 public class User {
 
 
-    public String getLietotajvards() {
-        return lietotajvards;
+    public String getUsername() {
+        return username;
     }
 
-    public void setLietotajvards(String lietotajvards) {
-        this.lietotajvards = lietotajvards;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getParole() {
-        return parole;
+    public String getPassword() {
+        return password;
     }
 
-    public void setParole(String parole) {
-        this.parole = parole;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
-    public String getEpasts() {
-        return epasts;
+    public String geteMail() {
+        return eMail;
     }
 
-    public void setEpasts(String epasts) {
-        this.epasts = epasts;
+    public void seteMail(String eMail) {
+        this.eMail = eMail;
     }
-    public String getLoma() {
-        return loma;
-    }
-
-    public void setLoma(String loma) {
-        this.loma = loma;
+    public String getAccessRights() {
+        return accessRights;
     }
 
-    private String lietotajvards;
-    private String parole;
-    private String epasts;
-    private String loma;
+    public void setAccessRights(String accessRights) {
+        this.accessRights = accessRights;
+    }
 
-    public User(String lietotajvards, String parole, String epasts, String loma){
-        this.lietotajvards= lietotajvards;
-        this.parole= parole;
-        this.epasts= epasts;
-        this.loma= loma;
+    private String username;
+    private String password;
+    private String eMail;
+    private String accessRights;
+
+    public User(String username, String password, String eMail, String accessRights){
+        this.username = username;
+        this.password = password;
+        this.eMail = eMail;
+        this.accessRights = accessRights;
     }
 
 }

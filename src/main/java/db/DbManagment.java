@@ -11,22 +11,22 @@ public class DbManagment {
 
     public Connection getConnectionDatabase() throws SQLException {
 
-        String pieslegumaCels = "jdbc:mysql://" + DateBaseConstants.DB_HOST + ":" + DateBaseConstants.DB_PORT + "/" + DateBaseConstants.DB_NAME;
+        String pathToDatabase = "jdbc:mysql://" + DateBaseConstants.DB_HOST + ":" + DateBaseConstants.DB_PORT + "/" + DateBaseConstants.DB_NAME;
 
-        dataBaseConnection = DriverManager.getConnection(pieslegumaCels, DateBaseConstants.DB_USER, DateBaseConstants.DB_PASS);
+        dataBaseConnection = DriverManager.getConnection(pathToDatabase, DateBaseConstants.DB_USER, DateBaseConstants.DB_PASS);
         return dataBaseConnection;
     }
 
-    public void userRegistration(User jaunslietotajs) throws SQLException {
+    public void userRegistration(User newUser) throws SQLException {
         String ievade = "INSERT INTO " + DateBaseConstants.TABLE_LIETOTAJI + "(" + DateBaseConstants.LIET_LIETOTAJVARDS + ","
                 + DateBaseConstants.LIET_PAROLE + "," + DateBaseConstants.LIET_E_PASTS + "," + DateBaseConstants.LIET_LOMA + ")" + " VALUES(?,?,?,?)";
 
         try {
             PreparedStatement inputValues = getConnectionDatabase().prepareStatement(ievade);
-            inputValues.setString(1, jaunslietotajs.getLietotajvards());
-            inputValues.setString(2, jaunslietotajs.getParole());
-            inputValues.setString(3, jaunslietotajs.getEpasts());
-            inputValues.setString(4, jaunslietotajs.getLoma());
+            inputValues.setString(1, newUser.getUsername());
+            inputValues.setString(2, newUser.getPassword());
+            inputValues.setString(3, newUser.geteMail());
+            inputValues.setString(4, newUser.getAccessRights());
 
             inputValues.executeUpdate();
         } catch (SQLException throwables) {
